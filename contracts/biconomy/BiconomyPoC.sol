@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 
-import {UserOperation} from "@account-abstraction/contracts/interfaces/UserOperation.sol";
+import {UserOperationHarness} from "../aa-harness/UserOperationHarness.sol";
 import {EcdsaOwnershipRegistryModuleHarness} from "./harness/EcdsaOwnershipRegistryModuleHarness.sol";
-import {UserOperationLib} from "@account-abstraction/contracts/interfaces/UserOperation.sol";
+import {UserOperationLibHarness} from "../aa-harness/UserOperationHarness.sol";
 import {MerkleProofHarness} from "./../oz-harness/MerkleProofHarness.sol";
 import {_packValidationData} from "@account-abstraction/contracts/core/Helpers.sol";
 
@@ -20,7 +20,7 @@ import {_packValidationData} from "@account-abstraction/contracts/core/Helpers.s
  * @author Fil Makarov - <filipp.makarov@biconomy.io>
  */
 contract BiconomyPoC is EcdsaOwnershipRegistryModuleHarness {
-    using UserOperationLib for UserOperation;
+    using UserOperationLibHarness for UserOperationHarness;
     
     // Event emitted when user transaction limit is exceeded
     event TransactionLimitExceeded(address indexed user, uint256 transactionCount, uint256 limit);
@@ -57,7 +57,6 @@ contract BiconomyPoC is EcdsaOwnershipRegistryModuleHarness {
     }
 
     /**
-    * @inheritdoc EcdsaOwnershipRegistryModuleHarness
     * @dev Validates a user operation, ensuring it meets spending and transaction limits.
     * The validation involves checking the user's spending limit, transaction limit, and the signature.
     * The signature can be either a single-chain signature or a multi-chain signature, validated using a Merkle tree.
@@ -69,10 +68,10 @@ contract BiconomyPoC is EcdsaOwnershipRegistryModuleHarness {
     * - 2: Invalid user operation.
     */
     function validateUserOp(
-        UserOperation calldata userOp,
+        UserOperationHarness calldata userOp,
         bytes32 userOpHash
         // spentAmount, validateSpendingLimit and validateTransactionLimit are values added for the PoC
-    ) external override validateSpendingLimit(msg.sender, userOp.spentAmount) validateTransactionLimit returns (uint256) {
+    ) external validateSpendingLimit(msg.sender, userOp.spentAmount) validateTransactionLimit returns (uint256) {
         (bytes memory moduleSignature, ) = abi.decode(
             userOp.signature,
             (bytes, address)
