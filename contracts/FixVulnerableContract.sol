@@ -36,8 +36,8 @@ contract FixVulnerableContract is ReentrancyGuard, FixVulnerableContractEvents, 
         require(newOwner != address(0), "New owner cannot be zero address");
         require(!isContract(newOwner), "New owner cannot be a contract");
 
-        emit OwnershipTransferred(owner, newOwner);
         owner = newOwner;
+        emit OwnershipTransferred(owner, newOwner);
     }
 
     function isContract(address account) internal view returns (bool) {
