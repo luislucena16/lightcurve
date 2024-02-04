@@ -23,10 +23,10 @@ contract FixVulnerableContract is ReentrancyGuard, FixVulnerableContractEvents, 
     }
 
     function withdraw(uint256 amount) public nonReentrant {
-        require(balances[msg.sender] >= amount, "Insufficient balance");
+        require(balances[msg.sender] >= amount, "Insufficient balance or invalid amount");
 
         balances[msg.sender] -= amount;
-        
+
         payable(msg.sender).transfer(amount);
 
         emit Withdraw(msg.sender, amount);
