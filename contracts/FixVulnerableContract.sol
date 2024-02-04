@@ -25,11 +25,11 @@ contract FixVulnerableContract is ReentrancyGuard, FixVulnerableContractEvents, 
     function withdraw(uint256 amount) public nonReentrant {
         require(balances[msg.sender] >= amount, "Insufficient balance");
 
+        balances[msg.sender] -= amount;
+        
         payable(msg.sender).transfer(amount);
 
         emit Withdraw(msg.sender, amount);
-
-        balances[msg.sender] -= amount;
     }
 
     function transferOwnership(address newOwner) public onlyOwner {
