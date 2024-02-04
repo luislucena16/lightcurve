@@ -160,6 +160,13 @@ forge clean
 
 # Running Biconomy SDK
 
+### Create `.env` file
+
+- Add your [PRIVATE_KEY](https://github.com/luislucena16/lightcurve-v2/blob/main/biconomy-sdk/.env.example) this is just to create an instance with the `ethers.Wallet` method.
+```bash
+PRIVATE_KEY="a30...68x9"
+```
+
 #### Go to the project directory
 
 ```bash
@@ -172,13 +179,6 @@ cd biconomy-sdk
 
 ```bash
 npm install
-```
-
-### Create `.env` file
-
-- Add your [PRIVATE_KEY](https://github.com/luislucena16/lightcurve-v2/blob/main/biconomy-sdk/.env.example) this is just to create an instance with the `ethers.Wallet` method.
-```bash
-PRIVATE_KEY="a30...68x9"
 ```
 
 ### Run Biconomy Modules
